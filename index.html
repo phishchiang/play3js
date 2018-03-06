@@ -23,7 +23,8 @@
     var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
     var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
     var cube = new THREE.Mesh( geometry, material );
-    cube.position.x = 3.25;
+    cube.position.x = -3.25;
+    cube.scale.set(0.5, 0.5, 0.5);
     scene.add( cube );
 
     var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
@@ -69,21 +70,26 @@
     
     //FBX import
     var loader = new THREE.FBXLoader();
-    /*
-    loader.load( 'models/fbx/cubeRotate.fbx', function ( object ) {
+    var mixers = [];
+    var clock = new THREE.Clock();
+
+    loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
       object.mixer = new THREE.AnimationMixer( object );
       mixers.push( object.mixer );
       var action = object.mixer.clipAction( object.animations[ 0 ] );
       action.play();
-      // object.traverse( function ( child ) {
-      //   if ( child.isMesh ) {
-      //     child.castShadow = true;
-      //     child.receiveShadow = true;
-      //   }
-      // } );
+      /*
+      object.traverse( function ( child ) {
+        if ( child.isMesh ) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      } );
+      */
+      object.scale.set(1, 1, 1);
       scene.add( object );
     } );
-    */
+    
     
     // game logic
     var update = function(){
@@ -110,7 +116,7 @@
 
     GameLoop();
 
-    /*
+    
     var animate = function() {
       requestAnimationFrame(animate)
 
@@ -118,11 +124,17 @@
         snowPartiArray[i].rotation.y += 0.01
       }
       
+      if ( mixers.length > 0 ) {
+        for ( var i = 0; i < mixers.length; i ++ ) {
+          mixers[ i ].update( clock.getDelta() );
+        }
+      }
+
       controls.update()
       renderer.render(scene, camera)
     }
     animate()
-    */
+    
 
   </script>
   <script>
