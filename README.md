@@ -1,2 +1,2 @@
-This is just some test for my little THREE.js world.
+This is just the test for my little THREE.js world.
 Thank you!!
