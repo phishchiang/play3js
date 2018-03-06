@@ -1,0 +1,22 @@
+{
+  "name": "play3js",
+  "version": "1.0.0",
+  "description": "This is just some test for my little THREE.js world.\r Thank you!!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phishchiang/play3js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phishchiang/play3js/issues"
+  },
+  "homepage": "https://github.com/phishchiang/play3js#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}

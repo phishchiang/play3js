@@ -1,0 +1,9 @@
+*.log
+*.pid
+*.seed
+*.swp
+*.un~
+*~
+.npm
+
+node_modules
