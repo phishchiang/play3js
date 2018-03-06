@@ -7,12 +7,12 @@ let app = express();
 // 建立中介函式
 app.use(parser.urlencoded({extended:true}));
 */
-app.use(express.static("www"));
-
+app.use(express.static("./"));
+/*
 app.get("index.html", function(req, res){
   res.send("works!!");
 });
-
+*/
 app.listen(3000, function () {
   console.log("伺服次啟動成功");
   });
