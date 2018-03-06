@@ -9,6 +9,7 @@
 <body>
   <script src="js/three.js"></script>
   <script src="js/OrbitControls.js"></script>
+  <script src="js/FBXLoader.js"></script>
   <!-- <script src="js/three-orbit-controls.js"></script> -->
   <script>
     var scene = new THREE.Scene();
@@ -22,7 +23,7 @@
     var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
     var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
     var cube = new THREE.Mesh( geometry, material );
-    cube.position.x = 0.25;
+    cube.position.x = 3.25;
     scene.add( cube );
 
     var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
@@ -65,6 +66,25 @@
     camera.position.y = 1
     controls.update()
     
+    
+    //FBX import
+    var loader = new THREE.FBXLoader();
+    /*
+    loader.load( 'models/fbx/cubeRotate.fbx', function ( object ) {
+      object.mixer = new THREE.AnimationMixer( object );
+      mixers.push( object.mixer );
+      var action = object.mixer.clipAction( object.animations[ 0 ] );
+      action.play();
+      // object.traverse( function ( child ) {
+      //   if ( child.isMesh ) {
+      //     child.castShadow = true;
+      //     child.receiveShadow = true;
+      //   }
+      // } );
+      scene.add( object );
+    } );
+    */
+    
     // game logic
     var update = function(){
 
@@ -72,7 +92,9 @@
         snowPartiArray[i].rotation.y += 0.05;
         // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
       }
+      
     };
+    
 
     // draw Scene
     var render = function(){
@@ -95,6 +117,7 @@
       for (i = 0; i < snowPartiArray.length; i++) {
         snowPartiArray[i].rotation.y += 0.01
       }
+      
       controls.update()
       renderer.render(scene, camera)
     }
@@ -103,7 +126,7 @@
 
   </script>
   <script>
-    // console.log(snowPartiArray[0].position);
+    console.log(loader);
   </script>
   <!-- <h1>Hi</h1> -->
 </body>
