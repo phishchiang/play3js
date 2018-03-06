@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Three JS Playground</title>
+</head>
+<body>
+  <script src="js/three.js"></script>
+  <script src="js/OrbitControls.js"></script>
+  <!-- <script src="js/three-orbit-controls.js"></script> -->
+  <script>
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xbad4ff);
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+    var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+    var cube = new THREE.Mesh( geometry, material );
+    cube.position.x = 0.25;
+    scene.add( cube );
+
+    var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
+    var floorMesh = new THREE.Mesh( floorGeo, material );
+    floorMesh.rotation.x = -Math.PI / 2;
+    scene.add( floorMesh );
+
+    var snowPartiGeo = new THREE.OctahedronBufferGeometry( 0.1, 0 );
+    var snowPartiMt = new THREE.MeshPhongMaterial( {color: 0xffffff} );
+    var snowPartiCounts = 100;
+    var snowPartiGrp = new THREE.Group();
+    var snowPartiArray = snowPartiGrp.children;
+
+
+    // snow particle FX
+    for ( i =0; i<=snowPartiCounts; i++){
+      var snowPartiMesh = new THREE.Mesh( snowPartiGeo, snowPartiMt );
+      // snowPartiMesh.position.set( 1.5, 0.5, 1 );
+      snowPartiMesh.position.x = ( Math.random()-0.5 )*10;
+      snowPartiMesh.position.y = ( Math.random()-0.5 )*10;
+      snowPartiMesh.position.z = ( Math.random()-0.5 )*10;
+      snowPartiGrp.add( snowPartiMesh );
+    }
+    
+    scene.add( snowPartiGrp );
+    
+    var spolotLight = new THREE.SpotLight( 0xFFFFFF, 0.5 ); // soft white light
+    spolotLight.position.set(1,2,0);
+    scene.add( spolotLight );
+
+    var amibLight = new THREE.AmbientLight( 0xFFFFFF, 0.15 );
+    amibLight.position.set( 3,3,3 );
+    scene.add( amibLight );
+
+    camera.position.z=3;
+
+    var controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+    camera.position.z = 15
+    camera.position.y = 1
+    controls.update()
+    
+    // game logic
+    var update = function(){
+
+      for ( i =0; i< snowPartiArray.length; i++){
+        snowPartiArray[i].rotation.y += 0.05;
+        // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
+      }
+    };
+
+    // draw Scene
+    var render = function(){
+      renderer.render(scene, camera);
+    };
+
+    // run game loop (update, render, repeat)
+    var GameLoop = function(){
+      requestAnimationFrame( GameLoop );
+      update();
+      render();
+    };
+
+    GameLoop();
+
+    /*
+    var animate = function() {
+      requestAnimationFrame(animate)
+
+      for (i = 0; i < snowPartiArray.length; i++) {
+        snowPartiArray[i].rotation.y += 0.01
+      }
+      controls.update()
+      renderer.render(scene, camera)
+    }
+    animate()
+    */
+
+  </script>
+  <script>
+    // console.log(snowPartiArray[0].position);
+  </script>
+  <!-- <h1>Hi</h1> -->
+</body>
+</html>
