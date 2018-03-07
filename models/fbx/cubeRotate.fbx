@@ -472,7 +472,7 @@ Objects:  {
 	Video: 2374745762608, "Video::file1", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "D:/html/play3js/models/fbx/img/maps.jpg"
+			P: "Path", "KString", "XRefUrl", "", "/img/maps.jpg"
 		}
 		UseMipMap: 0
 		Filename: "/img/maps.jpg"
@@ -488,7 +488,7 @@ Objects:  {
 			P: "UseMaterial", "bool", "", "",1
 		}
 		Media: "Video::file1"
-		FileName: "D:/html/play3js/models/fbx/img/maps.jpg"
+		FileName: "/img/maps.jpg"
 		RelativeFilename: "img\maps.jpg"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
