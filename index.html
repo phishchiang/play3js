@@ -22,10 +22,10 @@
 
     var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
     var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
-    var cube = new THREE.Mesh( geometry, material );
-    cube.position.x = -3.25;
-    cube.scale.set(0.5, 0.5, 0.5);
-    scene.add( cube );
+    var threeJsCube = new THREE.Mesh( geometry, material );
+    threeJsCube.position.x = -3.25;
+    threeJsCube.scale.set(0.5, 0.5, 0.5);
+    // scene.add( threeJsCube );
 
     var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
     var floorMesh = new THREE.Mesh( floorGeo, material );
@@ -74,27 +74,35 @@
     var mixers = [];
     var clock = new THREE.Clock();
     var fbxMt = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+    var cubeGeo = [];
+    var cubeJnt = [];
 
     loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
       object.mixer = new THREE.AnimationMixer( object );
       mixers.push( object.mixer );
       var action = object.mixer.clipAction( object.animations[ 0 ] );
       action.play();
-      /*
+      
       object.traverse( function ( child ) {
         if ( child.isMesh ) {
           child.castShadow = true;
           child.receiveShadow = true;
         }
       } );
-      */
       
-      var fbxCube = new THREE.Mesh( object, fbxMt );
-      
+      cubeGeo = object.children[0];
+      cubeJnt = object.children[1];
+      // console.log(cubeGeo.material.emissive);
+      // cubeGeo.material.color.set(0xffffff);
+      // cubeGeo.material.emissive.set(0xffffff);
+      // cubeGeo.material.emissiveIntensity = 3;
+      console.log(cubeJnt);
+      cubeJnt.add( threeJsCube );
       scene.add( object );
     } );
     
-    
+    // scene.add( threeJsCube );
+
     // game logic
     var update = function(){
 
