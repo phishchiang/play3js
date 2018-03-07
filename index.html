@@ -21,7 +21,9 @@
     document.body.appendChild( renderer.domElement );
 
     var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-    var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
+    var loader = new THREE.TextureLoader();
+    var textureMapCube = loader.load( 'models/fbx/img/maps.jpg' );
+    var material = new THREE.MeshPhongMaterial( {color: 0x00ff00, map: textureMapCube} );
     var threeJsCube = new THREE.Mesh( geometry, material );
     threeJsCube.position.x = -3.25;
     threeJsCube.scale.set(0.5, 0.5, 0.5);
@@ -52,11 +54,11 @@
     
     scene.add( snowPartiGrp );
     
-    var spolotLight = new THREE.SpotLight( 0xFFFFFF, 0.5 ); // soft white light
+    var spolotLight = new THREE.SpotLight( 0xFFFFFF, 0.95 ); // soft white light
     spolotLight.position.set(1,2,0);
     scene.add( spolotLight );
 
-    var amibLight = new THREE.AmbientLight( 0xFFFFFF, 0.15 );
+    var amibLight = new THREE.AmbientLight( 0xFFFFFF, 0.75 );
     amibLight.position.set( 3,3,3 );
     scene.add( amibLight );
 
@@ -76,6 +78,7 @@
     var fbxMt = new THREE.MeshBasicMaterial( {color: 0xffffff} );
     var cubeGeo = [];
     var cubeJnt = [];
+    
 
     loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
       object.mixer = new THREE.AnimationMixer( object );
@@ -97,6 +100,7 @@
       // cubeGeo.material.emissive.set(0xffffff);
       // cubeGeo.material.emissiveIntensity = 3;
       console.log(cubeJnt);
+      // threeJsCube.material.map = textureMapCube;
       cubeJnt.add( threeJsCube );
       scene.add( object );
     } );
