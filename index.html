@@ -30,6 +30,7 @@
     var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
     var floorMesh = new THREE.Mesh( floorGeo, material );
     floorMesh.rotation.x = -Math.PI / 2;
+    floorMesh.position.y = -0.5;
     scene.add( floorMesh );
 
     var snowPartiGeo = new THREE.OctahedronBufferGeometry( 0.1, 0 );
@@ -72,6 +73,7 @@
     var loader = new THREE.FBXLoader();
     var mixers = [];
     var clock = new THREE.Clock();
+    var fbxMt = new THREE.MeshBasicMaterial( {color: 0xffffff} );
 
     loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
       object.mixer = new THREE.AnimationMixer( object );
@@ -86,7 +88,9 @@
         }
       } );
       */
-      object.scale.set(1, 1, 1);
+      
+      var fbxCube = new THREE.Mesh( object, fbxMt );
+      
       scene.add( object );
     } );
     

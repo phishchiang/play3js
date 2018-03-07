@@ -2,8 +2,11 @@
 *.pid
 *.seed
 *.swp
+*.psd
 *.un~
+*.ma
 *~
 .npm
 
 node_modules
+.mayaSwatches
