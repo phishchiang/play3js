@@ -29,11 +29,11 @@
       renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.body.appendChild( renderer.domElement );
-      /*
+      
       // WEBVR.createButton
       renderer.vr.enabled = true;
       document.body.appendChild( WEBVR.createButton( renderer ) );
-      */
+      
 
       var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
       var loader = new THREE.TextureLoader();
@@ -119,24 +119,25 @@
     }
     
     function animate() {
-      requestAnimationFrame(animate);
-      // renderer.setAnimationLoop( render );
+      // requestAnimationFrame(animate);
+      renderer.setAnimationLoop( render );
+
+    }
+    
+    function render() {
+      renderer.render( scene, camera );
       if ( mixers.length > 0 ) {
         for ( var i = 0; i < mixers.length; i ++ ) {
           mixers[ i ].update( clock.getDelta() );
         }
       }
-      renderer.render( scene, camera );
+      // renderer.render( scene, camera );
 
       for ( i =0; i< snowPartiArray.length; i++){
         snowPartiArray[i].rotation.y += 0.05;
       }
     }
-    /*
-    function render() {
-      renderer.render( scene, camera );
-    }
-    */
+    
   </script>
 </body>
 </html>
