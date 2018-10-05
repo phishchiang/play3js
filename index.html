@@ -14,104 +14,108 @@
   <!-- <script src="js/three-orbit-controls.js"></script> -->
   <script>
     
-    var scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xbad4ff);
-    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
-
-    var renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-/*
-    document.body.appendChild( WEBVR.createButton( renderer ) );
-    renderer.vr.enabled = true;
-*/
-    var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
-    var loader = new THREE.TextureLoader();
-    var textureMapCube = loader.load( 'models/fbx/img/maps.jpg' );
-    var material = new THREE.MeshPhongMaterial( {color: 0x00ff00, map: textureMapCube} );
-    var threeJsCube = new THREE.Mesh( geometry, material );
-    threeJsCube.position.x = -3.25;
-    threeJsCube.scale.set(0.5, 0.5, 0.5);
-    // scene.add( threeJsCube );
-
-    var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
-    var floorMesh = new THREE.Mesh( floorGeo, material );
-    floorMesh.rotation.x = -Math.PI / 2;
-    floorMesh.position.y = -0.5;
-    scene.add( floorMesh );
-
-    var snowPartiGeo = new THREE.OctahedronBufferGeometry( 0.1, 0 );
-    var snowPartiMt = new THREE.MeshPhongMaterial( {color: 0xffffff} );
-    var snowPartiCounts = 100;
-    var snowPartiGrp = new THREE.Group();
-    var snowPartiArray = snowPartiGrp.children;
-
-
-    // snow particle FX
-    for ( i =0; i<=snowPartiCounts; i++){
-      var snowPartiMesh = new THREE.Mesh( snowPartiGeo, snowPartiMt );
-      // snowPartiMesh.position.set( 1.5, 0.5, 1 );
-      snowPartiMesh.position.x = ( Math.random()-0.5 )*10;
-      snowPartiMesh.position.y = ( Math.random()-0.5 )*10;
-      snowPartiMesh.position.z = ( Math.random()-0.5 )*10;
-      snowPartiGrp.add( snowPartiMesh );
-    }
-    
-    scene.add( snowPartiGrp );
-    
-    var spolotLight = new THREE.SpotLight( 0xFFFFFF, 0.95 ); // soft white light
-    spolotLight.position.set(1,2,0);
-    scene.add( spolotLight );
-
-    var amibLight = new THREE.AmbientLight( 0xFFFFFF, 0.75 );
-    amibLight.position.set( 3,3,3 );
-    scene.add( amibLight );
-
-    camera.position.z=3;
-
-    var controls = new THREE.OrbitControls(camera, renderer.domElement)
-
-    camera.position.z = 15
-    camera.position.y = 1
-    controls.update()
-    
-    
-    //FBX import
-    var loader = new THREE.FBXLoader();
+    var camera, scene, renderer;
+    let snowPartiArray;
     var mixers = [];
     var clock = new THREE.Clock();
-    var fbxMt = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-    var cubeGeo = [];
-    var cubeJnt = [];
-    
-
-    loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
-      object.mixer = new THREE.AnimationMixer( object );
-      mixers.push( object.mixer );
-      var action = object.mixer.clipAction( object.animations[ 0 ] );
-      action.play();
-      
-      object.traverse( function ( child ) {
-        if ( child.isMesh ) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      } );
-      
-      cubeGeo = object.children[0];
-      cubeJnt = object.children[1];
-
-      console.log(cubeJnt);
-
-      cubeJnt.add( threeJsCube );
-      scene.add( object );
-    } );
-    
-    // scene.add( threeJsCube );
-
-
-
+    init();
     animate();
+
+    function init(){
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xbad4ff);
+      camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+  /*
+      document.body.appendChild( WEBVR.createButton( renderer ) );
+      renderer.vr.enabled = true;
+  */
+      var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+      var loader = new THREE.TextureLoader();
+      var textureMapCube = loader.load( 'models/fbx/img/maps.jpg' );
+      var material = new THREE.MeshPhongMaterial( {color: 0x00ff00, map: textureMapCube} );
+      var threeJsCube = new THREE.Mesh( geometry, material );
+      threeJsCube.position.x = -3.25;
+      threeJsCube.scale.set(0.5, 0.5, 0.5);
+      // scene.add( threeJsCube );
+
+      var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
+      var floorMesh = new THREE.Mesh( floorGeo, material );
+      floorMesh.rotation.x = -Math.PI / 2;
+      floorMesh.position.y = -0.5;
+      scene.add( floorMesh );
+
+      var snowPartiGeo = new THREE.OctahedronBufferGeometry( 0.1, 0 );
+      var snowPartiMt = new THREE.MeshPhongMaterial( {color: 0xffffff} );
+      var snowPartiCounts = 100;
+      var snowPartiGrp = new THREE.Group();
+      snowPartiArray = snowPartiGrp.children;
+
+
+      // snow particle FX
+      for ( i =0; i<=snowPartiCounts; i++){
+        var snowPartiMesh = new THREE.Mesh( snowPartiGeo, snowPartiMt );
+        // snowPartiMesh.position.set( 1.5, 0.5, 1 );
+        snowPartiMesh.position.x = ( Math.random()-0.5 )*10;
+        snowPartiMesh.position.y = ( Math.random()-0.5 )*10;
+        snowPartiMesh.position.z = ( Math.random()-0.5 )*10;
+        snowPartiGrp.add( snowPartiMesh );
+      }
+      
+      scene.add( snowPartiGrp );
+      
+      var spolotLight = new THREE.SpotLight( 0xFFFFFF, 0.95 ); // soft white light
+      spolotLight.position.set(1,2,0);
+      scene.add( spolotLight );
+
+      var amibLight = new THREE.AmbientLight( 0xFFFFFF, 0.75 );
+      amibLight.position.set( 3,3,3 );
+      scene.add( amibLight );
+
+      camera.position.z=3;
+
+      var controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+      camera.position.z = 15
+      camera.position.y = 1
+      controls.update()
+      
+      
+      //FBX import
+      var loader = new THREE.FBXLoader();
+      
+      
+      var fbxMt = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+      var cubeGeo = [];
+      var cubeJnt = [];
+      
+
+      loader.load( './models/fbx/cubeRotate.fbx', function ( object ) {
+        object.mixer = new THREE.AnimationMixer( object );
+        mixers.push( object.mixer );
+        var action = object.mixer.clipAction( object.animations[ 0 ] );
+        action.play();
+        
+        object.traverse( function ( child ) {
+          if ( child.isMesh ) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        } );
+        
+        cubeGeo = object.children[0];
+        cubeJnt = object.children[1];
+
+        console.log(cubeJnt);
+
+        cubeJnt.add( threeJsCube );
+        scene.add( object );
+      } );
+    }
+    
     function animate() {
       requestAnimationFrame(animate);
       if ( mixers.length > 0 ) {
@@ -127,9 +131,6 @@
         // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
       }
     }
-
-
-
   </script>
 </body>
 </html>
