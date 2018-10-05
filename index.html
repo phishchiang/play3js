@@ -7,11 +7,13 @@
   <title>Three JS Playground</title>
 </head>
 <body>
-  <script src="./js/three.js"></script>
-  <script src="./js/OrbitControls.js"></script>
-  <script src="./js/FBXLoader.js"></script>
+  <script src="/js/three.js"></script>
+  <script src="/js/OrbitControls.js"></script>
+  <script src="/js/FBXLoader.js"></script>
+  <script src="/js/WebVR.js"></script>
   <!-- <script src="js/three-orbit-controls.js"></script> -->
   <script>
+    
     var scene = new THREE.Scene();
     scene.background = new THREE.Color(0xbad4ff);
     var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -19,7 +21,10 @@
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
-
+/*
+    document.body.appendChild( WEBVR.createButton( renderer ) );
+    renderer.vr.enabled = true;
+*/
     var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
     var loader = new THREE.TextureLoader();
     var textureMapCube = loader.load( 'models/fbx/img/maps.jpg' );
@@ -95,67 +100,36 @@
       
       cubeGeo = object.children[0];
       cubeJnt = object.children[1];
-      // console.log(cubeGeo.material.emissive);
-      // cubeGeo.material.color.set(0xffffff);
-      // cubeGeo.material.emissive.set(0xffffff);
-      // cubeGeo.material.emissiveIntensity = 3;
+
       console.log(cubeJnt);
-      // threeJsCube.material.map = textureMapCube;
+
       cubeJnt.add( threeJsCube );
       scene.add( object );
     } );
     
     // scene.add( threeJsCube );
 
-    // game logic
-    var update = function(){
 
-      for ( i =0; i< snowPartiArray.length; i++){
-        snowPartiArray[i].rotation.y += 0.05;
-        // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
-      }
-      
-    };
-    
 
-    // draw Scene
-    var render = function(){
-      renderer.render(scene, camera);
-    };
-
-    // run game loop (update, render, repeat)
-    var GameLoop = function(){
-      requestAnimationFrame( GameLoop );
-      update();
-      render();
-    };
-
-    GameLoop();
-
-    
-    var animate = function() {
-      requestAnimationFrame(animate)
-
-      for (i = 0; i < snowPartiArray.length; i++) {
-        snowPartiArray[i].rotation.y += 0.01
-      }
-      
+    animate();
+    function animate() {
+      requestAnimationFrame(animate);
       if ( mixers.length > 0 ) {
         for ( var i = 0; i < mixers.length; i ++ ) {
           mixers[ i ].update( clock.getDelta() );
         }
       }
+      renderer.render( scene, camera );
+      // renderer.setAnimationLoop( render );
 
-      controls.update()
-      renderer.render(scene, camera)
+      for ( i =0; i< snowPartiArray.length; i++){
+        snowPartiArray[i].rotation.y += 0.05;
+        // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
+      }
     }
-    animate()
-    
+
+
 
   </script>
-  <script>
-    console.log(loader);
-  </script>
-  <!-- <h1>Hi</h1> -->
 </body>
 </html>

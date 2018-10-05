@@ -13,7 +13,7 @@ app.get("index.html", function(req, res){
   res.send("works!!");
 });
 */
-app.listen(3000, function () {
+app.listen(8080, function () {
   console.log("伺服次啟動成功");
   });
 
