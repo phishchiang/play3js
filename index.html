@@ -11,7 +11,6 @@
   <script src="js/OrbitControls.js"></script>
   <script src="js/FBXLoader.js"></script>
   <script src="js/WebVR.js"></script>
-  <!-- <script src="js/three-orbit-controls.js"></script> -->
   <script>
     
     var camera, scene, renderer;
@@ -21,6 +20,7 @@
     init();
     animate();
 
+
     function init(){
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xbad4ff);
@@ -29,10 +29,12 @@
       renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth, window.innerHeight );
       document.body.appendChild( renderer.domElement );
-  /*
-      document.body.appendChild( WEBVR.createButton( renderer ) );
+      /*
+      // WEBVR.createButton
       renderer.vr.enabled = true;
-  */
+      document.body.appendChild( WEBVR.createButton( renderer ) );
+      */
+
       var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
       var loader = new THREE.TextureLoader();
       var textureMapCube = loader.load( 'models/fbx/img/maps.jpg' );
@@ -40,7 +42,7 @@
       var threeJsCube = new THREE.Mesh( geometry, material );
       threeJsCube.position.x = -3.25;
       threeJsCube.scale.set(0.5, 0.5, 0.5);
-      // scene.add( threeJsCube );
+
 
       var floorGeo = new THREE.PlaneBufferGeometry( 10,10 );
       var floorMesh = new THREE.Mesh( floorGeo, material );
@@ -118,19 +120,23 @@
     
     function animate() {
       requestAnimationFrame(animate);
+      // renderer.setAnimationLoop( render );
       if ( mixers.length > 0 ) {
         for ( var i = 0; i < mixers.length; i ++ ) {
           mixers[ i ].update( clock.getDelta() );
         }
       }
       renderer.render( scene, camera );
-      // renderer.setAnimationLoop( render );
 
       for ( i =0; i< snowPartiArray.length; i++){
         snowPartiArray[i].rotation.y += 0.05;
-        // snowPartiArray[i].position.x = snowPartiArray[i].position.x + 1;
       }
     }
+    /*
+    function render() {
+      renderer.render( scene, camera );
+    }
+    */
   </script>
 </body>
 </html>
